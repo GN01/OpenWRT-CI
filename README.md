@@ -35,5 +35,11 @@ Scripts——自定义脚本
 
 Config——自定义配置
 
+# 自定义配置
+ - 1.新增dae的2个依赖：kmod-sched-bpf、kmod-xdp-sockets-diag
+   2.只编译亚瑟和ap8220
+
 #
 [![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)
+
+
