@@ -36,8 +36,28 @@ Scripts——自定义脚本
 Config——自定义配置
 
 # 自定义配置
- - 1.新增dae的2个依赖：kmod-sched-bpf、kmod-xdp-sockets-diag
-   2.只编译亚瑟和ap8220
+
+## 主题
+- 使用 OpenWRT 默认主题 Bootstrap
+
+## 科学插件
+- homeproxy（基于 sing-box）
+- passwall
+- daed（eBPF 透明代理）
+
+## 系统插件
+- adguardhome（广告过滤/DNS）
+- diskman（磁盘管理）
+- netspeedtest（网速测试）
+- partexp（分区扩容）
+- easytier（P2P 组网）
+- zerotier（异地组网）
+- upnp
+- autoreboot（定时重启）
+
+## 内核依赖
+- kmod-sched-bpf（daed 依赖）
+- kmod-xdp-sockets-diag（daed 依赖）
 
 #
 [![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)

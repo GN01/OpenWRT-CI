@@ -37,7 +37,10 @@ sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
+#bootstrap是内置主题，没有config插件
+if [[ "$WRT_THEME" != "bootstrap" ]]; then
+	echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
+fi
 
 #手动调整的插件
 if [ -n "$WRT_PACKAGE" ]; then
