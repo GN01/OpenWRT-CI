@@ -144,17 +144,11 @@ function git_sparse_clone() {
 	echo "Sparse clone completed!"
 }
 
-#删除官方的默认dae
-# rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,dae*,bypass*}
-# rm -rf ../feeds/packages/net/{shadowsocks-rust,shadowsocksr-libev,xray*,v2ray*,dae*,sing-box,geoview}
-rm -rf ../feeds/luci/applications/luci-app-{dae*}
-rm -rf ../feeds/packages/net/{dae*}
+#删除feeds中的旧版本（避免冲突）
+rm -rf ../feeds/luci/applications/luci-app-{dae*,adguardhome,appfilter}
+rm -rf ../feeds/packages/net/{dae*,adguardhome}
 
-# QiuSimons luci-app-daed
-#git clone --depth=1 https://github.com/QiuSimons/luci-app-daed ./dae
-#mkdir -p ./libcron && wget -qO ./libcron/Makefile https://raw.githubusercontent.com/immortalwrt/packages/refs/heads/master/libs/libcron/Makefile
-
-# adguardhome
+#从kenzok8/small-package稀疏克隆插件
 git_sparse_clone main https://github.com/kenzok8/small-package daed luci-app-daed luci-app-adguardhome luci-app-oaf
 
 
