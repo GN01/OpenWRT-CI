@@ -67,13 +67,13 @@ UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 
 ## 系统插件
 #UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
-UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
+#UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
 #UPDATE_PACKAGE "fancontrol" "rockjake/luci-app-fancontrol" "main"
 #UPDATE_PACKAGE "gecoosac" "lwb1978/openwrt-gecoosac" "main"
 #UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
-UPDATE_PACKAGE "netspeedtest" "sirpdboy/luci-app-netspeedtest" "master" "" "homebox speedtest"
+#UPDATE_PACKAGE "netspeedtest" "sirpdboy/luci-app-netspeedtest" "master" "" "homebox speedtest"
 #UPDATE_PACKAGE "openlist2" "sbwml/luci-app-openlist2" "main"
-UPDATE_PACKAGE "partexp" "sirpdboy/luci-app-partexp" "main"
+#UPDATE_PACKAGE "partexp" "sirpdboy/luci-app-partexp" "main"
 #UPDATE_PACKAGE "qbittorrent" "sbwml/luci-app-qbittorrent" "master" "" "qt6base qt6tools rblibtorrent"
 #UPDATE_PACKAGE "qmodem" "FUjr/QModem" "main"
 #UPDATE_PACKAGE "quickfile" "sbwml/luci-app-quickfile" "main"
@@ -142,10 +142,10 @@ rm -rf ../feeds/luci/applications/luci-app-{dae*}
 rm -rf ../feeds/packages/net/{dae*}
 
 # QiuSimons luci-app-daed
-git clone --depth=1 https://github.com/QiuSimons/luci-app-daed ./dae
-mkdir -p ./libcron && wget -qO ./libcron/Makefile https://raw.githubusercontent.com/immortalwrt/packages/refs/heads/master/libs/libcron/Makefile
+#git clone --depth=1 https://github.com/QiuSimons/luci-app-daed ./dae
+#mkdir -p ./libcron && wget -qO ./libcron/Makefile https://raw.githubusercontent.com/immortalwrt/packages/refs/heads/master/libs/libcron/Makefile
 
 # adguardhome
-git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome
+git_sparse_clone main https://github.com/kenzok8/small-package daed luci-app-daed luci-app-adguardhome
 
 
