@@ -128,11 +128,20 @@ UPDATE_VERSION "sing-box"
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
 	branch="$1" repourl="$2" && shift 2
+	echo " "
+	echo "========== Git Sparse Clone =========="
+	echo "Repository: $repourl"
+	echo "Branch: $branch"
+	echo "Directories: $@"
+	echo "======================================="
 	git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
 	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
 	cd $repodir && git sparse-checkout set $@
+	echo "Checking out: $@"
 	mv -f $@ ../
+	echo "Moved to package/: $@"
 	cd .. && rm -rf $repodir
+	echo "Sparse clone completed!"
 }
 
 #删除官方的默认dae
