@@ -21,8 +21,6 @@ https://drive.wrt.moe/uboot/mediatek
 
 # 固件简要说明
 
-固件每天早上4点自动编译。
-
 固件信息里的时间为编译开始的时间，方便核对上游源码提交时间。
 
 MEDIATEK系列、QUALCOMMAX系列、ROCKCHIP系列、X86系列。
@@ -38,26 +36,37 @@ Config——自定义配置
 # 自定义配置
 
 ## 主题
-- 使用 OpenWRT 默认主题 Bootstrap
+- Bootstrap（OpenWRT 默认）
 
-## 科学插件
+## 科学/代理插件
 - homeproxy（基于 sing-box）
 - passwall
 - daed（eBPF 透明代理）
 
-## 系统插件
+## 网络插件
 - adguardhome（广告过滤/DNS）
-- diskman（磁盘管理）
-- netspeedtest（网速测试）
-- partexp（分区扩容）
+- oaf（应用过滤/OpenAppFilter）
 - easytier（P2P 组网）
 - zerotier（异地组网）
-- upnp
+- upnp（端口映射）
+
+## 系统插件
+- vlmcsd（KMS 激活）
+- cpufreq（CPU 调频）
 - autoreboot（定时重启）
 
-## 内核依赖
-- kmod-sched-bpf（daed 依赖）
-- kmod-xdp-sockets-diag（daed 依赖）
+## daed 内核依赖
+- kmod-sched-bpf
+- kmod-xdp-sockets-diag
+- CONFIG_KERNEL_DEBUG_INFO_BTF
+- CONFIG_KERNEL_BPF_EVENTS
+- CONFIG_KERNEL_XDP_SOCKETS
+- CONFIG_BPF_TOOLCHAIN_HOST
+
+## 精简内容
+- 移除 USB 相关内核模块和组件
+- 移除磁盘分区工具
+- 移除 netspeedtest/diskman/partexp/samba4
 
 #
 [![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)

@@ -146,6 +146,6 @@ rm -rf ../feeds/packages/net/{dae*}
 #mkdir -p ./libcron && wget -qO ./libcron/Makefile https://raw.githubusercontent.com/immortalwrt/packages/refs/heads/master/libs/libcron/Makefile
 
 # adguardhome
-git_sparse_clone main https://github.com/kenzok8/small-package daed luci-app-daed luci-app-adguardhome
+git_sparse_clone main https://github.com/kenzok8/small-package daed luci-app-daed luci-app-adguardhome luci-app-oaf
 
 
