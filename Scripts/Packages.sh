@@ -59,6 +59,7 @@ UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
 #UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
 UPDATE_PACKAGE "passwall" "xiaorouji/openwrt-passwall" "main" "pkg"
 #UPDATE_PACKAGE "passwall2" "xiaorouji/openwrt-passwall2" "main" "pkg"
+UPDATE_PACKAGE "luci-app-daed" "QiuSimons/luci-app-daed" "master"
 
 ## VPN插件
 #UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
@@ -122,7 +123,7 @@ UPDATE_VERSION() {
 }
 
 #UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
-UPDATE_VERSION "sing-box"
+#UPDATE_VERSION "sing-box"
 #UPDATE_VERSION "tailscale"
 
 # Git稀疏克隆，只克隆指定目录到本地
@@ -144,11 +145,11 @@ function git_sparse_clone() {
 	echo "Sparse clone completed!"
 }
 
-#删除feeds中的旧版本（避免冲突）
-rm -rf ../feeds/luci/applications/luci-app-{dae*,adguardhome,appfilter}
-rm -rf ../feeds/packages/net/{dae*,adguardhome}
+#删除官方的默认插件
+rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,dae*,bypass*}
+rm -rf ../feeds/packages/net/{v2ray-geodata,dae*}
 
 #从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/small-package daed luci-app-daed luci-app-adguardhome luci-app-oaf
+git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome
 
 
