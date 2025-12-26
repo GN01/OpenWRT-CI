@@ -32,9 +32,9 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
 sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 
 #自定义APK软件源（可选：清华镜像、上交镜像、官方源）
-APK_MIRROR="mirrors.tuna.tsinghua.edu.cn/immortalwrt"
+#APK_MIRROR="mirrors.tuna.tsinghua.edu.cn/immortalwrt"
 #APK_MIRROR="mirror.sjtu.edu.cn/immortalwrt"
-#APK_MIRROR="mirrors.vsean.net"
+APK_MIRROR="mirror.nju.edu.cn/immortalwrt"
 #APK_MIRROR="downloads.immortalwrt.org"
 
 mkdir -p ./files/etc/uci-defaults/
