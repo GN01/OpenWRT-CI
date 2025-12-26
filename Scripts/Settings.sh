@@ -31,6 +31,26 @@ sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $CFG_FILE
 #修改默认主机名
 sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 
+#自定义APK软件源（可选：清华镜像、上交镜像、官方源）
+APK_MIRROR="mirrors.tuna.tsinghua.edu.cn/immortalwrt"
+#APK_MIRROR="mirror.sjtu.edu.cn/immortalwrt"
+#APK_MIRROR="mirrors.vsean.net"
+#APK_MIRROR="downloads.immortalwrt.org"
+
+mkdir -p ./files/etc/uci-defaults/
+cat > ./files/etc/uci-defaults/99-custom-apk-repos <<EOF
+#!/bin/sh
+# 自定义APK软件源
+if [ -d /etc/apk/repositories.d ]; then
+    for f in /etc/apk/repositories.d/*.list; do
+        [ -f "\$f" ] && sed -i "s|downloads.immortalwrt.org|${APK_MIRROR}|g" "\$f"
+    done
+    echo "APK mirror set to: ${APK_MIRROR}"
+fi
+exit 0
+EOF
+chmod +x ./files/etc/uci-defaults/99-custom-apk-repos
+
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
