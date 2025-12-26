@@ -63,7 +63,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 ## 科学/代理插件
 - passwall
-- daed（eBPF 透明代理）
+- dae（eBPF 透明代理）
 
 ## 网络插件
 - adguardhome（广告过滤/DNS）
@@ -72,12 +72,14 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - zerotier（异地组网）
 - upnp（端口映射）
 
+> 注：adguardhome 和 oaf 来自 kenzok8/small-package
+
 ## 系统插件
 - vlmcsd（KMS 激活）
 - cpufreq（CPU 调频）
 - autoreboot（定时重启）
 
-## daed/eBPF 内核依赖
+## dae/eBPF 内核依赖
 - kmod-sched-bpf
 - kmod-xdp-sockets-diag
 - CONFIG_KERNEL_DEBUG_INFO=y（BTF 必须）

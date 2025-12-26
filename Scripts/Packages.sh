@@ -42,7 +42,7 @@ UPDATE_PACKAGE() {
 
 # 调用示例
 # UPDATE_PACKAGE "OpenAppFilter" "destan19/OpenAppFilter" "master" "" "custom_name1 custom_name2"
-# UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "luci-app-appfilter oaf" 这样会把原有的open-app-filter，luci-app-appfilter，oaf相关组件删除，不会出现coremark错误。
+#UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "luci-app-appfilter oaf" 这样会把原有的open-app-filter，luci-app-appfilter，oaf相关组件删除，不会出现coremark错误。
 
 # UPDATE_PACKAGE "包名" "项目地址" "项目分支" "pkg/name，可选，pkg为从大杂烩中单独提取包名插件；name为重命名为包名"
 ## 主题插件
@@ -53,7 +53,7 @@ UPDATE_PACKAGE() {
 #UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 
 ## 科学插件
-UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
+#UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
 #UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 #UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 #UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
@@ -66,6 +66,7 @@ UPDATE_PACKAGE "passwall" "xiaorouji/openwrt-passwall" "main" "pkg"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 
 ## 系统插件
+#UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "appfilter oaf"
 #UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
 #UPDATE_PACKAGE "fancontrol" "rockjake/luci-app-fancontrol" "main"
@@ -144,11 +145,11 @@ function git_sparse_clone() {
 	echo "Sparse clone completed!"
 }
 
-#删除官方的默认插件
-rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,dae*,bypass*}
-rm -rf ../feeds/packages/net/{v2ray-geodata,dae*}
+#删除官方的默认插件（保留dae，使用官方版本）
+rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
+rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome
+git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome luci-app-oaf
 
 
