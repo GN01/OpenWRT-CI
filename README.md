@@ -62,7 +62,6 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - Bootstrap（OpenWRT 默认）
 
 ## 科学/代理插件
-- homeproxy（基于 sing-box）
 - passwall
 - daed（eBPF 透明代理）
 
