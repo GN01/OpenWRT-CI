@@ -25,6 +25,8 @@ https://drive.wrt.moe/uboot/mediatek
 
 MEDIATEK系列、QUALCOMMAX系列、ROCKCHIP系列、X86系列。
 
+这里只编译 jdc AX1800pro、aliyun ap8220的NO-WI-FI固件，有其他需求请自行更改。
+
 # 目录简要说明
 
 - `workflows/` —— 自定义 CI 配置
@@ -61,16 +63,14 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 ## 主题
 - Bootstrap（OpenWRT 默认）
 
-## 科学/代理插件
+## 应用插件
 - passwall
-- dae（eBPF 透明代理）
-
-## 网络插件
+- dae
 - adguardhome（广告过滤/DNS）
 - oaf（应用过滤/OpenAppFilter）
-- easytier（P2P 组网）
-- zerotier（异地组网）
-- upnp（端口映射）
+- easytier（组网）
+- zerotier（组网）
+- upnp（自动端口映射服务）
 
 > 注：adguardhome 和 oaf 来自 kenzok8/small-package
 
