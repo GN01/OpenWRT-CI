@@ -64,8 +64,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - Bootstrap（OpenWRT 默认）
 
 ## 应用插件
-- passwall
-- dae
+- dae（eBPF 透明代理）
 - adguardhome（广告过滤/DNS）
 - oaf（应用过滤/OpenAppFilter）
 - easytier（组网）
@@ -73,6 +72,8 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - upnp（自动端口映射服务）
 
 > 注：adguardhome 和 oaf 来自 kenzok8/small-package
+> 注：移除passwall、homeproxy。在停止、卸载的时候不清理防火墙残留规则
+
 
 ## 系统插件
 - vlmcsd（KMS 激活）
