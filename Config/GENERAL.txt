@@ -2,6 +2,12 @@
 #passwall/homeproxy停止服务时不会清理防火墙残留规则，已移除
 CONFIG_PACKAGE_luci-app-passwall=n
 CONFIG_PACKAGE_luci-app-dae=y
+#禁用冲突的geodata包（v2ray-geoip和v2ray-geosite版本不匹配）
+#dae启动后会自动下载geodata
+CONFIG_PACKAGE_v2ray-geoip=n
+CONFIG_PACKAGE_v2ray-geosite=n
+CONFIG_PACKAGE_dae-geoip=n
+CONFIG_PACKAGE_dae-geosite=n
 #增加插件
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-zerotier=y
