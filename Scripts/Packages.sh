@@ -53,7 +53,7 @@ UPDATE_PACKAGE() {
 #UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 
 ## 科学插件
-#UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
+UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
 #UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 #UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 #UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
@@ -148,7 +148,7 @@ function git_sparse_clone() {
 #删除官方的默认插件（保留dae，使用官方版本）
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 #删除冲突的geodata包（v2ray-geoip和v2ray-geosite版本不匹配）
-rm -rf ../feeds/packages/net/{v2ray-geodata,v2ray-geoip,v2ray-geosite,xray-geodata}
+rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
 git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome luci-app-oaf

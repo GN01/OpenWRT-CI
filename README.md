@@ -64,6 +64,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - Bootstrap（OpenWRT 默认）
 
 ## 应用插件
+- homeproxy（已修复防火墙残留问题）
 - dae（eBPF 透明代理）
 - adguardhome（广告过滤/DNS）
 - oaf（应用过滤/OpenAppFilter）
@@ -72,7 +73,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - upnp（自动端口映射服务）
 
 > 注：adguardhome 和 oaf 来自 kenzok8/small-package
-> 注：移除passwall、homeproxy。在停止、卸载的时候不清理防火墙残留规则
+> 注：移除passwall。在passwall、homeproxy停止、卸载的时候不会清理防火墙残留规则，需要手动清理 /etc/config/firewall或者修改服务init配置文件自动清理
 
 
 ## 系统插件

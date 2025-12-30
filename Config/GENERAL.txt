@@ -1,5 +1,5 @@
 #科学插件调整
-#passwall/homeproxy停止服务时不会清理防火墙残留规则，已移除
+#homeproxy已修复防火墙残留规则问题（Handles.sh中patch）
 CONFIG_PACKAGE_luci-app-homeproxy=y
 CONFIG_PACKAGE_luci-app-dae=y
 #增加插件

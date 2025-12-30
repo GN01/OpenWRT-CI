@@ -2,6 +2,52 @@
 
 PKG_PATH="$GITHUB_WORKSPACE/wrt/package/"
 
+#修改homeproxy init.d脚本，解决停止服务时不清理防火墙残留规则的问题
+HP_INIT="./homeproxy/root/etc/init.d/homeproxy"
+if [ -f "$HP_INIT" ]; then
+	echo " "
+	echo "Patching homeproxy init.d script..."
+	
+	# 在start_service函数的fw4 reload前添加动态创建防火墙包含项
+	sed -i '/start_service()/,/^}$/{
+		/fw4 reload.*>.*\/dev\/null/i\
+\	# 动态添加防火墙包含项（如果不存在）\
+\	if ! uci -q get firewall.homeproxy_forward >/dev/null; then\
+\		uci set firewall.homeproxy_forward=include\
+\		uci set firewall.homeproxy_forward.type=nftables\
+\		uci set firewall.homeproxy_forward.path=/var/run/homeproxy/fw4_forward.nft\
+\		uci set firewall.homeproxy_forward.position=chain-pre\
+\		uci set firewall.homeproxy_forward.chain=forward\
+\	fi\
+\	if ! uci -q get firewall.homeproxy_input >/dev/null; then\
+\		uci set firewall.homeproxy_input=include\
+\		uci set firewall.homeproxy_input.type=nftables\
+\		uci set firewall.homeproxy_input.path=/var/run/homeproxy/fw4_input.nft\
+\		uci set firewall.homeproxy_input.position=chain-pre\
+\		uci set firewall.homeproxy_input.chain=input\
+\	fi\
+\	if ! uci -q get firewall.homeproxy_post >/dev/null; then\
+\		uci set firewall.homeproxy_post=include\
+\		uci set firewall.homeproxy_post.type=nftables\
+\		uci set firewall.homeproxy_post.path=/var/run/homeproxy/fw4_post.nft\
+\		uci set firewall.homeproxy_post.position=table-post\
+\	fi\
+\	uci commit firewall
+	}' $HP_INIT
+	
+	# 在stop_service函数的fw4 reload前添加清理防火墙包含项
+	sed -i '/stop_service()/,/^}$/{
+		/fw4 reload.*>.*\/dev\/null/i\
+\	# 清理防火墙包含项\
+\	uci -q delete firewall.homeproxy_forward\
+\	uci -q delete firewall.homeproxy_input\
+\	uci -q delete firewall.homeproxy_post\
+\	uci commit firewall
+	}' $HP_INIT
+	
+	cd $PKG_PATH && echo "homeproxy init.d has been patched!"
+fi
+
 #修改qca-nss-drv启动顺序
 NSS_DRV="../feeds/nss_packages/qca-nss-drv/files/qca-nss-drv.init"
 if [ -f "$NSS_DRV" ]; then
