@@ -73,7 +73,8 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - upnp（自动端口映射服务）
 
 > 注：adguardhome 和 oaf 来自 kenzok8/small-package
-> 注：移除passwall。在passwall、homeproxy停止、卸载的时候不会清理防火墙残留规则，需要手动清理 /etc/config/firewall或者修改服务init配置文件自动清理
+> 注：homeproxy 已在 Handles.sh 中修复防火墙残留问题（启动时动态添加，停止时自动清理）
+> 注：passwall 已移除（停止时不清理防火墙规则）
 
 
 ## 系统插件
@@ -97,6 +98,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 ## 精简内容
 - 移除 USB 相关内核模块和组件
+- 移除蓝牙相关内核模块
 - 移除磁盘分区工具
 - 移除 netspeedtest/diskman/partexp/samba4
 
