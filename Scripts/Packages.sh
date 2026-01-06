@@ -46,11 +46,11 @@ UPDATE_PACKAGE() {
 
 # UPDATE_PACKAGE "包名" "项目地址" "项目分支" "pkg/name，可选，pkg为从大杂烩中单独提取包名插件；name为重命名为包名"
 ## 主题插件
-#UPDATE_PACKAGE "argon" "sbwml/luci-theme-argon" "openwrt-25.12"
-#UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
-#UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
-#UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
-#UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
+UPDATE_PACKAGE "argon" "sbwml/luci-theme-argon" "openwrt-25.12"
+UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
+UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
+UPDATE_PACKAGE "kucat" "sirpdboy/luci-theme-kucat" "master"
+UPDATE_PACKAGE "kucat-config" "sirpdboy/luci-app-kucat-config" "master"
 
 ## 科学插件
 UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
@@ -151,6 +151,6 @@ rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome luci-app-oaf
+git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome
 
 
