@@ -68,11 +68,9 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 ## 应用插件
 - homeproxy（已修复防火墙残留 + 预置 surge 规则数据）
 - adguardhome（广告过滤/DNS，来自 kenzok8/small-package）
-- oaf（应用过滤/OpenAppFilter）
 - easytier（组网）
 - zerotier（组网）
 - upnp（自动端口映射）
-- ttyd（Web 终端）
 
 > 注：homeproxy 已在 Handles.sh 中修复防火墙残留问题，并预置 Loyalsoldier/surge-rules 数据
 > 注：passwall 已移除（停止时不清理防火墙规则）
@@ -82,7 +80,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - cpufreq（CPU 调频）
 - autoreboot（定时重启）
 
-## eBPF 内核依赖（可后装 dae）
+## eBPF 内核依赖（可后装 dae、daed）
 已预置 eBPF/BTF 内核支持，可通过 opkg 安装 dae：
 - kmod-sched-bpf / kmod-xdp-sockets-diag
 - CONFIG_KERNEL_DEBUG_INFO_BTF=y
