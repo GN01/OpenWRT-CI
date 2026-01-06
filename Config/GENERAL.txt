@@ -1,7 +1,7 @@
 #科学插件调整
 #homeproxy已修复防火墙残留规则问题（Handles.sh中patch）
 CONFIG_PACKAGE_luci-app-homeproxy=y
-#CONFIG_PACKAGE_luci-app-daed=y
+CONFIG_PACKAGE_luci-app-daed=y
 #增加插件
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-zerotier=y
@@ -10,7 +10,6 @@ CONFIG_PACKAGE_luci-app-cpufreq=y
 CONFIG_PACKAGE_luci-app-upnp=y
 #CONFIG_PACKAGE_luci-app-wolplus=y
 CONFIG_PACKAGE_luci-app-adguardhome=y
-CONFIG_PACKAGE_luci-app-oaf=y
 CONFIG_PACKAGE_luci-app-vlmcsd=y
 #CONFIG_PACKAGE_luci-app-ttyd=y
 
