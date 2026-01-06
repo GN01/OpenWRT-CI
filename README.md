@@ -61,39 +61,33 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 # 自定义配置
 
 ## 主题
-- Bootstrap（OpenWRT 默认）
+- argon（sbwml/luci-theme-argon）
+- aurora（eamonxg/luci-theme-aurora）
+- kucat（sirpdboy/luci-theme-kucat）
 
 ## 应用插件
-- homeproxy（已修复防火墙残留问题）
-- dae（eBPF 透明代理）
-- adguardhome（广告过滤/DNS）
+- homeproxy（已修复防火墙残留 + 预置 surge 规则数据）
+- adguardhome（广告过滤/DNS，来自 kenzok8/small-package）
 - oaf（应用过滤/OpenAppFilter）
 - easytier（组网）
 - zerotier（组网）
-- upnp（自动端口映射服务）
+- upnp（自动端口映射）
+- ttyd（Web 终端）
 
-> 注：adguardhome 和 oaf 来自 kenzok8/small-package
-> 注：homeproxy 已在 Handles.sh 中修复防火墙残留问题（启动时动态添加，停止时自动清理）
+> 注：homeproxy 已在 Handles.sh 中修复防火墙残留问题，并预置 Loyalsoldier/surge-rules 数据
 > 注：passwall 已移除（停止时不清理防火墙规则）
-
 
 ## 系统插件
 - vlmcsd（KMS 激活）
 - cpufreq（CPU 调频）
 - autoreboot（定时重启）
 
-## dae/eBPF 内核依赖
-- kmod-sched-bpf
-- kmod-xdp-sockets-diag
-- CONFIG_KERNEL_DEBUG_INFO=y（BTF 必须）
-- CONFIG_KERNEL_DEBUG_INFO_BTF=y（BTF 核心）
-- CONFIG_KERNEL_DEBUG_INFO_REDUCED=n（不能精简）
+## eBPF 内核依赖（可后装 dae）
+已预置 eBPF/BTF 内核支持，可通过 opkg 安装 dae：
+- kmod-sched-bpf / kmod-xdp-sockets-diag
+- CONFIG_KERNEL_DEBUG_INFO_BTF=y
 - CONFIG_KERNEL_BPF_EVENTS=y
-- CONFIG_KERNEL_CGROUPS=y
 - CONFIG_KERNEL_CGROUP_BPF=y
-- CONFIG_KERNEL_XDP_SOCKETS=y
-- CONFIG_KERNEL_KPROBES=y
-- CONFIG_KERNEL_KPROBE_EVENTS=y
 - CONFIG_BPF_TOOLCHAIN_HOST=y
 
 ## 精简内容
