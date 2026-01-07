@@ -61,14 +61,13 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 # 自定义配置
 
 ## 主题
-- argon（sbwml/luci-theme-argon）
 - aurora（eamonxg/luci-theme-aurora）
-- kucat（sirpdboy/luci-theme-kucat）
 
 ## 应用插件
 - homeproxy（已修复防火墙残留 + 预置 surge 规则数据）
-- adguardhome（广告过滤/DNS，来自 kenzok8/small-package）
-- easytier（组网）
+- daed（基于eBPF的代理）
+- adguardhome（广告过滤/DNS，kenzok8/small-package）
+- easytier（组网，带easytier-core，）
 - zerotier（组网）
 - upnp（自动端口映射）
 
@@ -80,7 +79,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - cpufreq（CPU 调频）
 - autoreboot（定时重启）
 
-## eBPF 内核依赖（可后装 dae、daed）
+## eBPF 内核依赖
 已预置 eBPF/BTF 内核支持，可通过 opkg 安装 dae：
 - kmod-sched-bpf / kmod-xdp-sockets-diag
 - CONFIG_KERNEL_DEBUG_INFO_BTF=y
