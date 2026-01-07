@@ -70,40 +70,6 @@ if [ -f "$HP_INIT" ]; then
 	cd $PKG_PATH && echo "homeproxy init.d has been patched!"
 fi
 
-#预置EasyTier核心程序（避免在线下载失败）
-if [ -d *"easytier"* ]; then
-	echo " "
-	echo "Downloading easytier-core..."
-	
-	EASYTIER_VER="v2.4.5"
-	EASYTIER_ARCH="aarch64"
-	EASYTIER_URL="https://github.com/EasyTier/EasyTier/releases/download/${EASYTIER_VER}/easytier-linux-${EASYTIER_ARCH}-${EASYTIER_VER}.zip"
-	EASYTIER_PATH="./easytier/root/usr/bin"
-	
-	mkdir -p $EASYTIER_PATH
-	curl -sL "$EASYTIER_URL" -o /tmp/easytier.zip
-	unzip -jo /tmp/easytier.zip -d $EASYTIER_PATH easytier-core easytier-cli 2>/dev/null || \
-	unzip -jo /tmp/easytier.zip -d $EASYTIER_PATH "*/easytier-core" "*/easytier-cli" 2>/dev/null
-	chmod +x $EASYTIER_PATH/easytier-*
-	rm -f /tmp/easytier.zip
-	
-	if [ -f "$EASYTIER_PATH/easytier-core" ]; then
-		echo "easytier-core ${EASYTIER_VER} has been installed!"
-	else
-		echo "easytier-core download failed!"
-	fi
-fi
-
-#修改argon主题字体和颜色（已禁用，使用默认配置）
-#if [ -d *"luci-theme-argon"* ]; then
-#	echo " "
-#
-#	cd ./luci-theme-argon/
-#
-#	sed -i "s/primary '.*'/primary '#31a1a1'/; s/'0.2'/'0.5'/; s/'none'/'bing'/; s/'600'/'normal'/" ./luci-app-argon-config/root/etc/config/argon
-#
-#	cd $PKG_PATH && echo "theme-argon has been fixed!"
-#fi
 
 #修改qca-nss-drv启动顺序
 NSS_DRV="../feeds/nss_packages/qca-nss-drv/files/qca-nss-drv.init"
