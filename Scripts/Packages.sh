@@ -50,7 +50,7 @@ UPDATE_PACKAGE() {
 #UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 
 ## 科学插件
-UPDATE_PACKAGE "helloworld" "fw876/helloworld" "master" "name"
+#UPDATE_PACKAGE "helloworld" "fw876/helloworld" "master" "name"
 #UPDATE_PACKAGE "homeproxy" "VIKINGYFY/homeproxy" "main"
 #UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 #UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
