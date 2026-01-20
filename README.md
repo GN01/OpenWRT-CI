@@ -61,18 +61,18 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 # 自定义配置
 
 ## 主题
-- aurora（eamonxg/luci-theme-aurora）
+- 使用 OpenWRT 默认主题
+
+## 科学/代理插件
+- daed（基于 eBPF 的透明代理，已启用）
+- adguardhome（广告过滤/DNS）
+
+> 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
 
 ## 应用插件
-- homeproxy（已修复防火墙残留 + 预置 surge 规则数据）
-- daed（基于eBPF的代理）
-- adguardhome（广告过滤/DNS，kenzok8/small-package）
-- easytier（组网，带easytier-core，）
-- zerotier（组网）
+- easytier（异地组网）
+- zerotier（异地组网）
 - upnp（自动端口映射）
-
-> 注：homeproxy 已在 Handles.sh 中修复防火墙残留问题，并预置 Loyalsoldier/surge-rules 数据
-> 注：passwall 已移除（停止时不清理防火墙规则）
 
 ## 系统插件
 - vlmcsd（KMS 激活）
@@ -80,7 +80,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - autoreboot（定时重启）
 
 ## eBPF 内核依赖
-已预置 eBPF/BTF 内核支持，可通过 opkg 安装 dae：
+已预置 eBPF/BTF 内核支持，daed 开箱即用：
 - kmod-sched-bpf / kmod-xdp-sockets-diag
 - CONFIG_KERNEL_DEBUG_INFO_BTF=y
 - CONFIG_KERNEL_BPF_EVENTS=y
