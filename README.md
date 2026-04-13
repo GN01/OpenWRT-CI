@@ -66,6 +66,8 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 ## 科学/代理插件
 - daed（基于 eBPF 的透明代理，已启用）
 - adguardhome（广告过滤/DNS）
+- luci-app-ssr-plus（科学上网）
+- luci-app-mosdns（DNS 分流）
 
 > 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
 
