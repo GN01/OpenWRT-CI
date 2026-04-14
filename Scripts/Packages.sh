@@ -177,6 +177,6 @@ rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
 git_sparse_clone master https://github.com/kenzok8/openwrt-packages luci-app-adguardhome
-git_sparse_clone main https://github.com/kenzok8/small luci-app-ssr-plus
-git_sparse_clone main https://github.com/kenzok8/small luci-app-mosdns
+git_sparse_clone master https://github.com/kenzok8/small luci-app-ssr-plus
+git_sparse_clone master https://github.com/kenzok8/small luci-app-mosdns
 
