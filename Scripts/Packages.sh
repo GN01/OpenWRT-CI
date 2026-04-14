@@ -126,20 +126,47 @@ UPDATE_VERSION "sing-box"
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
-	branch="$1" repourl="$2" && shift 2
+	local branch="$1" repourl="$2"
+	shift 2
+	local start_dir="$PWD"
+	local repodir
+	repodir=$(basename -s .git "$repourl")
 	echo " "
 	echo "========== Git Sparse Clone =========="
 	echo "Repository: $repourl"
 	echo "Branch: $branch"
 	echo "Directories: $@"
 	echo "======================================="
-	git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
-	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
-	cd $repodir && git sparse-checkout set $@
+
+	if ! git clone --depth=1 -b "$branch" --single-branch --filter=blob:none --sparse "$repourl"; then
+		echo "Sparse clone failed: $repourl ($branch)"
+		return 1
+	fi
+
+	if ! cd "$repodir"; then
+		echo "Cannot enter repository directory: $repodir"
+		return 1
+	fi
+
+	if ! git sparse-checkout set "$@"; then
+		echo "Sparse checkout failed: $@"
+		cd "$start_dir" || return 1
+		rm -rf "$repodir"
+		return 1
+	fi
+
 	echo "Checking out: $@"
-	mv -f $@ ../
+
+	if ! mv -f "$@" "$start_dir"/; then
+		echo "Move package failed: $@"
+		cd "$start_dir" || return 1
+		rm -rf "$repodir"
+		return 1
+	fi
+
 	echo "Moved to package/: $@"
-	cd .. && rm -rf $repodir
+	cd "$start_dir" || return 1
+	rm -rf "$repodir"
 	echo "Sparse clone completed!"
 }
 
@@ -149,7 +176,7 @@ rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/openwrt-packages luci-app-adguardhome
+git_sparse_clone master https://github.com/kenzok8/openwrt-packages luci-app-adguardhome
 git_sparse_clone main https://github.com/kenzok8/small luci-app-ssr-plus
 git_sparse_clone main https://github.com/kenzok8/small luci-app-mosdns
 
