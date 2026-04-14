@@ -144,6 +144,8 @@ function git_sparse_clone() {
 
 #删除官方的默认插件（保留dae，使用官方版本）
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
+#删除feeds中的adguardhome LuCI，确保使用仓库内固化版本
+rm -rf ../feeds/luci/applications/luci-app-adguardhome
 #删除冲突的geodata包（v2ray-geoip和v2ray-geosite版本不匹配）
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
