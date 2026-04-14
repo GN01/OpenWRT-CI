@@ -126,47 +126,20 @@ UPDATE_VERSION "sing-box"
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
-	local branch="$1" repourl="$2"
-	shift 2
-	local start_dir="$PWD"
-	local repodir
-	repodir=$(basename -s .git "$repourl")
+	branch="$1" repourl="$2" && shift 2
 	echo " "
 	echo "========== Git Sparse Clone =========="
 	echo "Repository: $repourl"
 	echo "Branch: $branch"
 	echo "Directories: $@"
 	echo "======================================="
-
-	if ! git clone --depth=1 -b "$branch" --single-branch --filter=blob:none --sparse "$repourl"; then
-		echo "Sparse clone failed: $repourl ($branch)"
-		return 1
-	fi
-
-	if ! cd "$repodir"; then
-		echo "Cannot enter repository directory: $repodir"
-		return 1
-	fi
-
-	if ! git sparse-checkout set "$@"; then
-		echo "Sparse checkout failed: $@"
-		cd "$start_dir" || return 1
-		rm -rf "$repodir"
-		return 1
-	fi
-
+	git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
+	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
+	cd $repodir && git sparse-checkout set $@
 	echo "Checking out: $@"
-
-	if ! mv -f "$@" "$start_dir"/; then
-		echo "Move package failed: $@"
-		cd "$start_dir" || return 1
-		rm -rf "$repodir"
-		return 1
-	fi
-
+	mv -f $@ ../
 	echo "Moved to package/: $@"
-	cd "$start_dir" || return 1
-	rm -rf "$repodir"
+	cd .. && rm -rf $repodir
 	echo "Sparse clone completed!"
 }
 
