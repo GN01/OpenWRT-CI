@@ -1,6 +1,5 @@
 #科学插件调整
 CONFIG_PACKAGE_luci-app-homeproxy=n
-CONFIG_PACKAGE_luci-app-ssr-plus=y
 CONFIG_PACKAGE_luci-app-daed=y
 #增加插件
 CONFIG_PACKAGE_luci-app-aurora-config=n
@@ -13,7 +12,6 @@ CONFIG_PACKAGE_luci-app-upnp=y
 #CONFIG_PACKAGE_luci-app-wolplus=y
 CONFIG_PACKAGE_luci-app-adguardhome=y
 CONFIG_PACKAGE_luci-app-vlmcsd=y
-CONFIG_PACKAGE_luci-app-mosdns=y
 #CONFIG_PACKAGE_luci-app-ttyd=y
 
 #精简：无USB存储相关插件

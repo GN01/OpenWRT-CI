@@ -69,7 +69,6 @@ UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 #UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
 #UPDATE_PACKAGE "fancontrol" "rockjake/luci-app-fancontrol" "main"
 #UPDATE_PACKAGE "gecoosac" "lwb1978/openwrt-gecoosac" "main"
-#UPDATE_PACKAGE "mosdns" "sbwml/luci-app-mosdns" "v5" "" "v2dat"
 #UPDATE_PACKAGE "netspeedtest" "sirpdboy/luci-app-netspeedtest" "master" "" "homebox speedtest"
 #UPDATE_PACKAGE "openlist2" "sbwml/luci-app-openlist2" "main"
 #UPDATE_PACKAGE "partexp" "sirpdboy/luci-app-partexp" "main"
@@ -148,8 +147,6 @@ rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 #删除冲突的geodata包（v2ray-geoip和v2ray-geosite版本不匹配）
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
-#从kenzok8/small-package稀疏克隆插件
-git_sparse_clone master https://github.com/kenzok8/openwrt-packages luci-app-adguardhome
-git_sparse_clone master https://github.com/kenzok8/small luci-app-ssr-plus
-git_sparse_clone master https://github.com/kenzok8/small luci-app-mosdns
+#使用仓库内固化版本（仅固化LuCI，adguardhome主程序走官方feeds最新版）
+cp -rf "$GITHUB_WORKSPACE/Packages/luci-app-adguardhome" ./
 

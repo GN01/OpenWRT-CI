@@ -32,6 +32,7 @@ MEDIATEK系列、QUALCOMMAX系列、ROCKCHIP系列、X86系列。
 - `workflows/` —— 自定义 CI 配置
 - `Scripts/` —— 自定义脚本
 - `Config/` —— 自定义配置
+- `Packages/` —— 本地固化软件包
 
 # 脚本说明
 
@@ -65,9 +66,8 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 ## 科学/代理插件
 - daed（基于 eBPF 的透明代理，已启用）
-- adguardhome（广告过滤/DNS）
-- luci-app-ssr-plus（科学上网）
-- luci-app-mosdns（DNS 分流）
+- adguardhome（广告过滤/DNS，官方 feeds 最新版）
+- luci-app-adguardhome（本地固化，来源于 `kenzok8/openwrt-packages@06dbfd1`）
 
 > 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
 
