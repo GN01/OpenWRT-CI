@@ -66,6 +66,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 ## 科学/代理插件
 - daed（基于 eBPF 的透明代理，已启用）
+- luci-app-dae（代理管理）
 - adguardhome（广告过滤/DNS，官方 feeds 最新版）
 - luci-app-adguardhome（本地固化，来源于 `kenzok8/openwrt-packages@06dbfd1`）
 
