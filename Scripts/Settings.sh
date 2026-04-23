@@ -53,6 +53,30 @@ exit 0
 EOF
 chmod +x ./files/etc/uci-defaults/99-custom-apk-repos
 
+cat > ./files/etc/uci-defaults/98-vim-init <<'EOF'
+#!/bin/sh
+# 首次开机初始化 Vim 配置
+cat > /root/.vimrc <<'EOVIM'
+" 强制内部使用 utf-8
+set encoding=utf-8
+" 设置终端显示编码
+set termencoding=utf-8
+" 智能猜测文件编码（优先 utf-8，其次兼容国内 GBK 家族）
+set fileencodings=utf-8,gbk,gb2312,gb18030,cp936
+
+" 顺手开启一些高级编辑器的标配功能
+syntax on
+set number
+set hlsearch
+EOVIM
+
+grep -q "^alias vi='vim'$" /etc/profile || echo "alias vi='vim'" >> /etc/profile
+grep -q '^export EDITOR=vim$' /etc/profile || echo "export EDITOR=vim" >> /etc/profile
+
+exit 0
+EOF
+chmod +x ./files/etc/uci-defaults/98-vim-init
+
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
