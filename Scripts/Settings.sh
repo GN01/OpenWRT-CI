@@ -60,6 +60,12 @@ if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
 	echo "WRT_WIFI=wifi-no" >> $GITHUB_ENV
 fi
 
+#Linux 6.18新增选项：OpenWRT元数据未收录，CONFIG_KERNEL_前缀无效，需直接写入内核目标配置
+#ARM64 BRBE（Branch Record Buffer Extension），路由器不需要
+for kconfig in $(find ./target/linux/ -maxdepth 2 -name "config-*"); do
+	grep -q "CONFIG_ARM64_BRBE" "$kconfig" 2>/dev/null || echo "# CONFIG_ARM64_BRBE is not set" >> "$kconfig"
+done
+
 #高通平台调整
 DTS_PATH="./target/linux/qualcommax/dts/"
 if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
