@@ -1,50 +1,102 @@
 # OpenWRT-CI
+云编译OpenWRT固件
 
 官方版：
-
 https://github.com/immortalwrt/immortalwrt.git
 
-自用版：
-
+高通版：
 https://github.com/VIKINGYFY/immortalwrt.git
 
 # U-BOOT
 
-高通版-沉心：
+高通版：
 
-https://github.com/chenxin527/uboot-ipq60xx-emmc-build.git
+https://github.com/chenxin527/uboot-ipq60xx-emmc-build
 
-https://github.com/chenxin527/uboot-ipq60xx-nand-build.git
+https://github.com/chenxin527/uboot-ipq60xx-nor-build
 
-https://github.com/chenxin527/uboot-ipq60xx-nor-build.git
-
-高通版-小猪：
-
-https://github.com/1980490718/u-boot-2016.git
-
-联发科-全新版：
-
-https://github.com/VIKINGYFY/UBOOT-CI/releases
-
-联发科-官方版：
+联发科版：
 
 https://drive.wrt.moe/uboot/mediatek
 
 # 固件简要说明
 
-固件每天早上5点自动编译。
-
 固件信息里的时间为编译开始的时间，方便核对上游源码提交时间。
 
 MEDIATEK系列、QUALCOMMAX系列、ROCKCHIP系列、X86系列。
 
+这里只编译 jdc AX1800pro、aliyun ap8220的NO-WI-FI固件，有其他需求请自行更改。
+
 # 目录简要说明
 
-workflows——自定义CI配置
+- `workflows/` —— 自定义 CI 配置
+- `Scripts/` —— 自定义脚本
+- `Config/` —— 自定义配置
+- `Packages/` —— 本地固化软件包
 
-Scripts——自定义脚本
+# 脚本说明
 
-Config——自定义配置
+## Packages.sh
+
+### UPDATE_PACKAGE 函数
+```bash
+UPDATE_PACKAGE "包名" "仓库地址" "分支" "特殊处理" "额外清理名称"
+```
+- 自动删除 feeds 中的同名旧版本
+- 克隆 GitHub 仓库到 package 目录
+- 特殊处理：`pkg`=提取子目录，`name`=重命名
+
+### git_sparse_clone 函数
+```bash
+git_sparse_clone "分支" "仓库URL" "目录1" "目录2" ...
+```
+- 稀疏克隆，只下载指定目录（节省时间和空间）
+- 适合从大杂烩仓库提取多个插件
+
+### UPDATE_VERSION 函数
+```bash
+UPDATE_VERSION "软件包名" "是否测试版(true/false)"
+```
+- 自动检测并更新软件包到最新版本
+
+# 自定义配置
+
+## 主题
+- 使用 OpenWRT 默认主题
+
+## 科学/代理插件
+- daed（基于 eBPF 的透明代理，已启用）
+- luci-app-dae（代理管理）
+- adguardhome（广告过滤/DNS，官方 feeds 最新版）
+- luci-app-adguardhome（本地固化，来源于 `kenzok8/openwrt-packages@06dbfd1`）
+
+> 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
+
+## 应用插件
+- easytier（异地组网）
+- zerotier（异地组网）
+- upnp（自动端口映射）
+
+## 系统插件
+- vlmcsd（KMS 激活）
+- cpufreq（CPU 调频）
+- autoreboot（定时重启）
+
+## eBPF 内核依赖
+已预置 eBPF/BTF 内核支持，daed 开箱即用：
+- kmod-sched-bpf / kmod-xdp-sockets-diag
+- CONFIG_KERNEL_DEBUG_INFO_BTF=y
+- CONFIG_KERNEL_BPF_EVENTS=y
+- CONFIG_KERNEL_CGROUP_BPF=y
+- CONFIG_BPF_TOOLCHAIN_HOST=y
+
+## 精简内容
+- 移除 USB 相关内核模块和组件
+- 移除蓝牙相关内核模块
+- 移除磁盘分区工具
+- 移除 netspeedtest/diskman/partexp/samba4
 
 #
 [![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)
+
+
