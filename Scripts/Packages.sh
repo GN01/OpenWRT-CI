@@ -47,11 +47,36 @@ UPDATE_PACKAGE() {
 # UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "luci-app-appfilter oaf" 这样会把原有的open-app-filter，luci-app-appfilter，oaf相关组件删除，不会出现coremark错误。
 
 # UPDATE_PACKAGE "包名" "项目地址" "项目分支" "pkg/name，可选，pkg为从大杂烩中单独提取包名插件；name为重命名为包名"
-UPDATE_PACKAGE "daed" "VIPDIKINGYFY/daed" "main"
-UPDATE_PACKAGE "dae" "VIPDIKINGYFY/dae" "main"
-UPDATE_PACKAGE "dae-core" "VIPDIKINGYFY/dae-core" "main"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
-UPDATE_PACKAGE "adguardhome" "kenzok8/openwrt-packages" "master" "pkg"
+
+# Git稀疏克隆，只克隆指定目录到本地
+function git_sparse_clone() {
+	branch="$1" repourl="$2" && shift 2
+	echo " "
+	echo "========== Git Sparse Clone =========="
+	echo "Repository: $repourl"
+	echo "Branch: $branch"
+	echo "Directories: $@"
+	echo "======================================="
+	git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
+	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
+	cd $repodir && git sparse-checkout set $@
+	echo "Checking out: $@"
+	mv -f $@ ../
+	echo "Moved to package/: $@"
+	cd .. && rm -rf $repodir
+	echo "Sparse clone completed!"
+}
+
+#删除官方的默认插件（保留dae/daed，使用官方feeds版本）
+rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
+rm -rf ../feeds/packages/net/{v2ray-geodata}
+
+#从kenzok8/small-package稀疏克隆插件
+git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome luci-app-oaf
+
+#复制本地固化软件包
+cp -rf $GITHUB_WORKSPACE/Packages/* ./
 
 #更新软件包版本
 UPDATE_VERSION() {
