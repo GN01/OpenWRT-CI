@@ -73,7 +73,7 @@ rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*}
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/small-package luci-app-adguardhome
+git_sparse_clone main https://github.com/kenzok8/small-package adguardhome
 
 #复制本地固化软件包
 cp -rf $GITHUB_WORKSPACE/Packages/* ./
