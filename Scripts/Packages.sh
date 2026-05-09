@@ -68,12 +68,9 @@ function git_sparse_clone() {
 	echo "Sparse clone completed!"
 }
 
-#删除官方的默认插件（保留dae/daed，使用官方feeds版本）
+#删除官方的默认插件（保留dae/daed和adguardhome，使用官方feeds版本）
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
-rm -rf ../feeds/packages/net/{v2ray-geodata,adguardhome}
-
-#从kenzok8/small-package稀疏克隆插件
-git_sparse_clone main https://github.com/kenzok8/small-package adguardhome
+rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #复制本地固化软件包
 cp -rf $GITHUB_WORKSPACE/Packages/* ./
