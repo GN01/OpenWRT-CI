@@ -68,14 +68,14 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - daed（基于 eBPF 的透明代理，已启用）
 - luci-app-dae（代理管理）
 - adguardhome（广告过滤/DNS，官方 feeds 最新版）
-- luci-app-adguardhome（本地固化，来源于 `kenzok8/openwrt-packages@06dbfd1`）
+- luci-app-adguardhome（引用 `GN01/luci-app-adguardhome` 默认分支）
+- luci-app-ssr-plus（代理管理，引用 `fw876/helloworld` 默认分支）
 
 > 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
 
 ## 应用插件
 - easytier（异地组网）
 - zerotier（异地组网）
-- upnp（自动端口映射）
 
 ## 系统插件
 - vlmcsd（KMS 激活）
@@ -98,5 +98,3 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 #
 [![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)
-
-

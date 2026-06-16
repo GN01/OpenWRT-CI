@@ -17,7 +17,7 @@ UPDATE_PACKAGE() {
 	for NAME in "${PKG_LIST[@]}"; do
 		# 查找匹配的目录
 		echo "Search directory: $NAME"
-		local FOUND_DIRS=$(find ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
+		local FOUND_DIRS=$(find ./ ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
 
 		# 删除找到的目录
 		if [ -n "$FOUND_DIRS" ]; then
@@ -31,7 +31,11 @@ UPDATE_PACKAGE() {
 	done
 
 	# 克隆 GitHub 仓库
-	git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git"
+	if [ -n "$PKG_BRANCH" ]; then
+		git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git"
+	else
+		git clone --depth=1 "https://github.com/$PKG_REPO.git"
+	fi
 
 	# 处理克隆的仓库
 	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
@@ -68,12 +72,16 @@ function git_sparse_clone() {
 	echo "Sparse clone completed!"
 }
 
-#删除官方的默认插件（保留dae/daed和adguardhome，使用官方feeds版本）
+#删除官方的默认插件（保留dae/daed和adguardhome核心，luci-app-adguardhome使用GN01仓库版本）
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
 #复制本地固化软件包
 cp -rf $GITHUB_WORKSPACE/Packages/* ./
+
+#引用外部仓库软件包
+UPDATE_PACKAGE "helloworld" "fw876/helloworld" "" "" "luci-app-ssr-plus ssr-plus shadowsocksr-libev"
+UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" ""
 
 #更新软件包版本
 UPDATE_VERSION() {
