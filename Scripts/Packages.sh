@@ -80,7 +80,6 @@ rm -rf ../feeds/packages/net/{v2ray-geodata}
 cp -rf $GITHUB_WORKSPACE/Packages/* ./
 
 #引用外部仓库软件包
-UPDATE_PACKAGE "helloworld" "fw876/helloworld" "" "" "luci-app-ssr-plus ssr-plus shadowsocksr-libev"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" ""
 
 #更新软件包版本

@@ -69,7 +69,6 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - luci-app-dae（代理管理）
 - adguardhome（广告过滤/DNS，官方 feeds 最新版）
 - luci-app-adguardhome（引用 `GN01/luci-app-adguardhome` 默认分支）
-- luci-app-ssr-plus（代理管理，引用 `fw876/helloworld` 默认分支）
 
 > 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
 
