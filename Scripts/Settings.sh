@@ -4,8 +4,7 @@
 
 #移除luci-app-attendedsysupgrade
 sed -i "/attendedsysupgrade/d" $(find ./feeds/luci/collections/ -type f -name "Makefile")
-#修改默认主题
-sed -i "s/luci-theme-bootstrap/luci-theme-$WRT_THEME/g" $(find ./feeds/luci/collections/ -type f -name "Makefile")
+#保留bootstrap作为默认主题，额外主题通过配置安装后在LuCI中切换
 #修改immortalwrt.lan关联IP
 sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-mod-system/ -type f -name "flash.js")
 #添加编译日期标识
@@ -38,9 +37,12 @@ sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
-echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
-#bootstrap是内置主题，没有config插件
-if [[ "$WRT_THEME" != "bootstrap" ]]; then
+echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >> ./.config
+echo "CONFIG_PACKAGE_luci-theme-argon=y" >> ./.config
+echo "CONFIG_PACKAGE_luci-app-argon-config=y" >> ./.config
+#WRT_THEME作为额外主题安装，bootstrap保持默认主题
+if [[ -n "$WRT_THEME" && "$WRT_THEME" != "bootstrap" && "$WRT_THEME" != "argon" ]]; then
+	echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 	echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
 fi
 

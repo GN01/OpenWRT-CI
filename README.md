@@ -40,6 +40,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 ## 主题
 - 使用 OpenWRT 默认主题
+- 额外打包 luci-theme-argon 和 luci-app-argon-config，可在 LuCI 中切换
 
 
 ## 应用插件
