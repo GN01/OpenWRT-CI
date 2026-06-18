@@ -74,6 +74,8 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	#取消nss相关feed
 	echo "CONFIG_FEED_nss_packages=n" >> ./.config
 	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
+	echo "CONFIG_ATH11K_NSS_SUPPORT=n" >> ./.config
+	echo "CONFIG_ATH11K_NSS_MESH_SUPPORT=n" >> ./.config
 	#设置NSS版本
 	echo "CONFIG_NSS_FIRMWARE_VERSION_12_5=y" >> ./.config
 	#其他调整
