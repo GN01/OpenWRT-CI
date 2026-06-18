@@ -86,8 +86,8 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	fi
 
 	#开启sqm-nss插件
-	echo "CONFIG_PACKAGE_luci-app-sqm=y" >> ./.config
-	echo "CONFIG_PACKAGE_sqm-scripts-nss=y" >> ./.config
+	#echo "CONFIG_PACKAGE_luci-app-sqm=y" >> ./.config
+	#echo "CONFIG_PACKAGE_sqm-scripts-nss=y" >> ./.config
 fi
 
 #自定义APK软件源
