@@ -1,30 +1,7 @@
 # OpenWRT-CI
 云编译OpenWRT固件
 
-官方版：
-https://github.com/immortalwrt/immortalwrt.git
-
-高通版：
-https://github.com/VIKINGYFY/immortalwrt.git
-
-# U-BOOT
-
-高通版：
-
-https://github.com/chenxin527/uboot-ipq60xx-emmc-build
-
-https://github.com/chenxin527/uboot-ipq60xx-nor-build
-
-联发科版：
-
-https://drive.wrt.moe/uboot/mediatek
-
 # 固件简要说明
-
-固件信息里的时间为编译开始的时间，方便核对上游源码提交时间。
-
-MEDIATEK系列、QUALCOMMAX系列、ROCKCHIP系列、X86系列。
-
 这里只编译 jdc AX1800pro、aliyun ap8220的NO-WI-FI固件，有其他需求请自行更改。
 
 # 目录简要说明
@@ -64,15 +41,11 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 ## 主题
 - 使用 OpenWRT 默认主题
 
-## 科学/代理插件
-- daed（基于 eBPF 的透明代理，已启用）
+
+## 应用插件
 - luci-app-dae（代理管理）
 - adguardhome（广告过滤/DNS，官方 feeds 最新版）
 - luci-app-adguardhome（引用 `GN01/luci-app-adguardhome` 默认分支）
-
-> 注：passwall/homeproxy 已移除（停止时不清理防火墙规则）
-
-## 应用插件
 - easytier（异地组网）
 - zerotier（异地组网）
 
@@ -94,6 +67,3 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 - 移除蓝牙相关内核模块
 - 移除磁盘分区工具
 - 移除 netspeedtest/diskman/partexp/samba4
-
-#
-[![Stargazers over time](https://starchart.cc/VIKINGYFY/OpenWRT-CI.svg?variant=adaptive)](https://starchart.cc/VIKINGYFY/OpenWRT-CI)
