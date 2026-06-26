@@ -64,7 +64,7 @@ function git_sparse_clone() {
 	echo "Directories: $@"
 	echo "======================================="
 	git clone --depth=1 -b $branch --single-branch --filter=blob:none --sparse $repourl
-	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
+	repodir=$(basename "$repourl" .git)
 	cd $repodir && git sparse-checkout set $@
 	echo "Checking out: $@"
 	mv -f $@ ../
@@ -81,6 +81,10 @@ rm -rf ../feeds/packages/net/{v2ray-geodata}
 cp -rf $GITHUB_WORKSPACE/Packages/* ./
 
 #引用外部仓库软件包
+for NAME in dae daed luci-app-daede; do
+	find ./ ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "$NAME" -prune -exec rm -rf {} \; 2>/dev/null
+done
+git_sparse_clone "master" "https://github.com/kenzok8/small.git" "dae" "daed" "luci-app-daede"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" ""
 
 #更新软件包版本

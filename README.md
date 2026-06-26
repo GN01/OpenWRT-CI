@@ -44,7 +44,7 @@ UPDATE_VERSION "软件包名" "是否测试版(true/false)"
 
 
 ## 应用插件
-- luci-app-dae（代理管理）
+- dae / daed / luci-app-daede（代理管理，引用 `kenzok8/small`）
 - adguardhome（广告过滤/DNS，官方 feeds 最新版）
 - luci-app-adguardhome（引用 `GN01/luci-app-adguardhome` 默认分支）
 - easytier（异地组网）
