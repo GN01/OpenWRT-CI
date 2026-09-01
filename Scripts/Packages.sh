@@ -77,8 +77,10 @@ function git_sparse_clone() {
 rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
 rm -rf ../feeds/packages/net/{v2ray-geodata}
 
-#复制本地固化软件包
-cp -rf $GITHUB_WORKSPACE/Packages/* ./
+#复制本地固化软件包（目录为空或不存在时跳过）
+if [ -d "$GITHUB_WORKSPACE/Packages" ] && [ -n "$(ls -A "$GITHUB_WORKSPACE/Packages" 2>/dev/null)" ]; then
+	cp -rf "$GITHUB_WORKSPACE/Packages/"* ./
+fi
 
 #引用外部仓库软件包
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" ""

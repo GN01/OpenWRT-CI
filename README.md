@@ -10,6 +10,7 @@
 - `Scripts/` —— 自定义脚本
 - `Config/` —— 自定义配置
 - `Packages/` —— 本地固化软件包
+- `build.sh` —— 本地一键编译（默认 `IPQ60XX-WIFI-NO`）
 
 # 脚本说明
 
