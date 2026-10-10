@@ -10,6 +10,7 @@ UPDATE_PACKAGE() {
 	local PKG_SPECIAL=$4
 	local PKG_LIST=("$PKG_NAME" $5)  # 第5个参数为自定义名称列表
 	local REPO_NAME=${PKG_REPO#*/}
+	local REPO_PATH="./package/$REPO_NAME"
 
 	echo " "
 
@@ -17,7 +18,7 @@ UPDATE_PACKAGE() {
 	for NAME in "${PKG_LIST[@]}"; do
 		# 查找匹配的目录
 		echo "Search directory: $NAME"
-		local FOUND_DIRS=$(find ./ ../feeds/luci/ ../feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
+		local FOUND_DIRS=$(find ./feeds/luci/ ./feeds/packages/ -maxdepth 3 -type d -iname "*$NAME*" 2>/dev/null)
 
 		# 删除找到的目录
 		if [ -n "$FOUND_DIRS" ]; then
@@ -31,18 +32,12 @@ UPDATE_PACKAGE() {
 	done
 
 	# 克隆 GitHub 仓库
-	if [ -n "$PKG_BRANCH" ]; then
-		git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git"
-	else
-		git clone --depth=1 "https://github.com/$PKG_REPO.git"
-	fi
+	git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git" $REPO_PATH
 
 	# 处理克隆的仓库
 	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
-		find ./$REPO_NAME/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./ \;
-		rm -rf ./$REPO_NAME/
-	elif [[ "$PKG_SPECIAL" == "name" ]]; then
-		mv -f $REPO_NAME $PKG_NAME
+		find $REPO_PATH/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./package \;
+		rm -rf $REPO_PATH
 	fi
 }
 
@@ -51,8 +46,12 @@ UPDATE_PACKAGE() {
 # UPDATE_PACKAGE "open-app-filter" "destan19/OpenAppFilter" "master" "" "luci-app-appfilter oaf" 这样会把原有的open-app-filter，luci-app-appfilter，oaf相关组件删除，不会出现coremark错误。
 
 # UPDATE_PACKAGE "包名" "项目地址" "项目分支" "pkg/name，可选，pkg为从大杂烩中单独提取包名插件；name为重命名为包名"
-UPDATE_PACKAGE "argon" "sbwml/luci-theme-argon" "openwrt-25.12"
+UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
+UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
+UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
+# HomeProxy 要求 sing-box >= 1.15，官方 feeds 仍是 1.12，需连同 sing-box 从该仓库引入
+UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy axonhub gecoosac luci-app-axonhub luci-app-gecoosac luci-app-wolultra"
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
@@ -67,29 +66,27 @@ function git_sparse_clone() {
 	repodir=$(echo $repourl | awk -F '/' '{print $(NF)}')
 	cd $repodir && git sparse-checkout set $@
 	echo "Checking out: $@"
-	mv -f $@ ../
+	mkdir -p ../package
+	mv -f $@ ../package/
 	echo "Moved to package/: $@"
 	cd .. && rm -rf $repodir
 	echo "Sparse clone completed!"
 }
 
 #删除官方的默认插件（保留dae/daed和adguardhome核心，luci-app-adguardhome使用GN01仓库版本）
-rm -rf ../feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
-rm -rf ../feeds/packages/net/{v2ray-geodata}
+rm -rf ./feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
+rm -rf ./feeds/packages/net/v2ray-geodata
 
 #复制本地固化软件包（目录为空或不存在时跳过）
 if [ -d "$GITHUB_WORKSPACE/Packages" ] && [ -n "$(ls -A "$GITHUB_WORKSPACE/Packages" 2>/dev/null)" ]; then
-	cp -rf "$GITHUB_WORKSPACE/Packages/"* ./
+	cp -rf "$GITHUB_WORKSPACE/Packages/"* ./package/
 fi
-
-#引用外部仓库软件包
-UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" ""
 
 #更新软件包版本
 UPDATE_VERSION() {
 	local PKG_NAME=$1
 	local PKG_MARK=${2:-false}
-	local PKG_FILES=$(find ./ ../feeds/packages/ -maxdepth 3 -type f -wholename "*/$PKG_NAME/Makefile")
+	local PKG_FILES=$(find ./package/ ./feeds/packages/ -maxdepth 3 -type f -wholename "*/$PKG_NAME/Makefile")
 
 	if [ -z "$PKG_FILES" ]; then
 		echo "$PKG_NAME not found!"
@@ -125,9 +122,6 @@ UPDATE_VERSION() {
 		fi
 	done
 }
-
-#UPDATE_VERSION "软件包名" "测试版，true，可选，默认为否"
-UPDATE_VERSION "sing-box"
 
 #引入私有扩展脚本
 if [ -f "$GITHUB_WORKSPACE/Scripts/PRIVATE.sh" ]; then

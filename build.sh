@@ -22,7 +22,7 @@ export WRT_WORD="${WRT_WORD:-12345678}"
 export WRT_IP="${WRT_IP:-192.168.0.1}"
 export WRT_PW="${WRT_PW:-无}"
 export WRT_REPO="${WRT_REPO:-https://github.com/VIKINGYFY/immortalwrt.git}"
-export WRT_BRANCH="${WRT_BRANCH:-main}"
+export WRT_BRANCH="${WRT_BRANCH:-owrt}"
 export WRT_SOURCE="${WRT_SOURCE:-VIKINGYFY/immortalwrt}"
 export WRT_PACKAGE="${WRT_PACKAGE:-}"
 export WRT_TEST="${WRT_TEST:-false}"
@@ -64,10 +64,8 @@ if [ "${SKIP_FEEDS:-0}" != "1" ]; then
         ./scripts/feeds install -a
 fi
 
-cd ./package
 "$GITHUB_WORKSPACE/Scripts/Packages.sh"
 "$GITHUB_WORKSPACE/Scripts/Handles.sh"
-cd ..
 
 rm -f .config
 cat "$CONFIG_FILE" "$GITHUB_WORKSPACE/Config/GENERAL.txt" >> .config

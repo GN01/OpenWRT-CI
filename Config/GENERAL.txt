@@ -1,7 +1,7 @@
 #科学插件调整
-CONFIG_PACKAGE_luci-app-homeproxy=n
+CONFIG_PACKAGE_luci-app-homeproxy=y
 CONFIG_PACKAGE_luci-app-daed=n
-CONFIG_PACKAGE_luci-app-dae=y
+CONFIG_PACKAGE_luci-app-dae=n
 #增加插件
 CONFIG_PACKAGE_luci-app-autoreboot=y
 CONFIG_PACKAGE_luci-app-zerotier=y
@@ -55,8 +55,6 @@ CONFIG_PACKAGE_kmod-xdp-sockets-diag=y
 CONFIG_KERNEL_DEBUG_INFO=y
 CONFIG_KERNEL_DEBUG_INFO_BTF=y
 CONFIG_KERNEL_DEBUG_INFO_REDUCED=n
-#禁用ARM64 BRBE（Linux 6.18新增选项，路由器不需要）
-#注意：CONFIG_KERNEL_前缀对此选项无效（OpenWRT元数据未收录），实际禁用在Settings.sh中通过内核配置文件完成
 #BPF/eBPF支持
 CONFIG_KERNEL_BPF_EVENTS=y
 CONFIG_KERNEL_CGROUPS=y
