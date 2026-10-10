@@ -51,7 +51,7 @@ UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
 # HomeProxy 要求 sing-box >= 1.15，官方 feeds 仍是 1.12，需连同 sing-box 从该仓库引入
-UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy axonhub gecoosac luci-app-axonhub luci-app-gecoosac luci-app-wolultra"
+UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {
