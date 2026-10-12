@@ -31,13 +31,17 @@ UPDATE_PACKAGE() {
 		fi
 	done
 
-	# 克隆 GitHub 仓库
-	git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git" $REPO_PATH
+	# 克隆 GitHub 仓库。同一源码树再次编译时目录已在，直接复用
+	if [ -d "$REPO_PATH/.git" ]; then
+		echo "Use existing repository: $REPO_PATH"
+	else
+		git clone --depth=1 --single-branch --branch $PKG_BRANCH "https://github.com/$PKG_REPO.git" $REPO_PATH
 
-	# 处理克隆的仓库
-	if [[ "$PKG_SPECIAL" == "pkg" ]]; then
-		find $REPO_PATH/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./package \;
-		rm -rf $REPO_PATH
+		# 处理克隆的仓库
+		if [[ "$PKG_SPECIAL" == "pkg" ]]; then
+			find $REPO_PATH/*/ -maxdepth 3 -type d -iname "*$PKG_NAME*" -prune -exec cp -rf {} ./package \;
+			rm -rf $REPO_PATH
+		fi
 	fi
 }
 
@@ -52,6 +56,11 @@ UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
 # HomeProxy 要求 sing-box >= 1.15，官方 feeds 仍是 1.12，需连同 sing-box 从该仓库引入
 UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
+# Bandix 用 TC/eBPF 统计流量，与 SFE、硬件加速、Turbo ACC 冲突，只编进 X86
+if [[ "${WRT_TARGET,,}" == "x86" ]]; then
+	UPDATE_PACKAGE "bandix" "timsaya/openwrt-bandix" "main"
+	UPDATE_PACKAGE "luci-app-bandix" "timsaya/luci-app-bandix" "main"
+fi
 
 # Git稀疏克隆，只克隆指定目录到本地
 function git_sparse_clone() {

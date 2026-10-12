@@ -85,6 +85,18 @@ exit 0
 EOF
 chmod +x ./files/etc/uci-defaults/98-vim-init
 
+#Bandix 的 TC 挂载看不到被流量分载绕过的包
+if [[ "${WRT_TARGET,,}" == "x86" ]]; then
+	cat > ./files/etc/uci-defaults/97-x86-no-flowoffload <<'EOF'
+#!/bin/sh
+uci -q set firewall.@defaults[0].flow_offloading='0'
+uci -q set firewall.@defaults[0].flow_offloading_hw='0'
+uci -q commit firewall
+exit 0
+EOF
+	chmod +x ./files/etc/uci-defaults/97-x86-no-flowoffload
+fi
+
 #修改jdc ax1800 pro 的内核大小为12M
 image_file='./target/linux/qualcommax/image/ipq60xx.mk'
 sed -i "/^define Device\/jdcloud_re-ss-01/,/^endef/ { /KERNEL_SIZE := 6144k/s//KERNEL_SIZE := 12288k/ }" $image_file
