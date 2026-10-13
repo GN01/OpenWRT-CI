@@ -61,7 +61,7 @@ IPQ 两台共用一套源码。X86 单独一套源码，不和 ARM 混编。
 aurora。下拉菜单和圆角由 `Scripts/Handles.sh` 按 VIKINGYFY 的配置改默认模板。
 
 ## 应用插件
-- luci-app-homeproxy（代理。sing-box 从 `VIKINGYFY/packages` 引入，当前为 1.15 alpha，官方 feeds 的 1.12 不满足依赖）
+- luci-app-homeproxy（代理，使用源码树自带的官方包和 sing-box，路由模式含自定义路由）
 - adguardhome（广告过滤 / DNS）
 - luci-app-adguardhome（`GN01/luci-app-adguardhome`）
 - easytier、zerotier（异地组网）

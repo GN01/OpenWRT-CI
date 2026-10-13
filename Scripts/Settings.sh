@@ -54,21 +54,21 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	fi
 fi
 
-#自定义APK软件源
-APK_MIRROR="mirror.nju.edu.cn/immortalwrt"
-
 mkdir -p ./files/etc/uci-defaults/
-cat > ./files/etc/uci-defaults/99-custom-apk-repos <<EOF
-#!/bin/sh
-if [ -d /etc/apk/repositories.d ]; then
-    for f in /etc/apk/repositories.d/*.list; do
-        [ -f "\$f" ] && sed -i "s|downloads.immortalwrt.org|${APK_MIRROR}|g" "\$f"
-    done
-    echo "APK mirror set to: ${APK_MIRROR}"
-fi
-exit 0
-EOF
-chmod +x ./files/etc/uci-defaults/99-custom-apk-repos
+# 南京大学镜像的 25.12-SNAPSHOT 索引会截断，apk 更新报 wget error 8。先用默认 downloads.immortalwrt.org
+rm -f ./files/etc/uci-defaults/99-custom-apk-repos
+# APK_MIRROR="mirror.nju.edu.cn/immortalwrt"
+# cat > ./files/etc/uci-defaults/99-custom-apk-repos <<EOF
+# #!/bin/sh
+# if [ -d /etc/apk/repositories.d ]; then
+#     for f in /etc/apk/repositories.d/*.list; do
+#         [ -f "\$f" ] && sed -i "s|downloads.immortalwrt.org|${APK_MIRROR}|g" "\$f"
+#     done
+#     echo "APK mirror set to: ${APK_MIRROR}"
+# fi
+# exit 0
+# EOF
+# chmod +x ./files/etc/uci-defaults/99-custom-apk-repos
 
 cat > ./files/etc/uci-defaults/98-vim-init <<'EOF'
 #!/bin/sh

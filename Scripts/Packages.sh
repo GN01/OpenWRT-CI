@@ -54,8 +54,10 @@ UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
 UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
-# HomeProxy 要求 sing-box >= 1.15，官方 feeds 仍是 1.12，需连同 sing-box 从该仓库引入
-UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
+# HomeProxy 和 sing-box 用源码树自带的官方包，保留自定义路由。
+# 上次克隆的 VIKINGYFY 仓库会盖住 feeds，这里删掉。
+rm -rf ./package/packages
+# UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
 # Bandix、OpenAppFilter 都依赖内核特性，并且和流量分载冲突，只编进 X86
 if [[ "${WRT_TARGET,,}" == "x86" ]]; then
 	UPDATE_PACKAGE "bandix" "timsaya/openwrt-bandix" "main"
