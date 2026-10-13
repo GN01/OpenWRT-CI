@@ -46,3 +46,26 @@ FIX "natmapt" "$PACKAGE_PATH/luci-app-natmapt" sed -i "s/network/services/g" \
 #修复Rust编译失败
 FIX "rust" "$FEEDS_PATH/packages/lang/rust" sed -i 's/ci-llvm=true/ci-llvm=false/g' \
 	"$FEEDS_PATH/packages/lang/rust/Makefile"
+
+#去掉 EasyTier 状态页底部的贡献者头像
+strip_easytier_contributors() {
+	local f="$PACKAGE_PATH/luci-app-easytier/luci-app-easytier/luasrc/view/easytier/easytier_cli.htm"
+	local tmp
+
+	[ -f "$f" ] || return 1
+	tmp="$(mktemp)"
+	awk '
+		BEGIN { skip = 0; mode = "" }
+		mode == "css" && $0 ~ /^<\/style>/ { mode = ""; skip = 0; print; next }
+		mode == "html" && $0 ~ /^<script/ { mode = ""; skip = 0; print; next }
+		mode == "js" && $0 ~ /^\/\/ 自动刷新/ { mode = ""; skip = 0; print; next }
+		$0 ~ /^\/\* Contributors Section \*\// { mode = "css"; skip = 1; next }
+		$0 ~ /^<!-- Contributors Section -->/ { mode = "html"; skip = 1; next }
+		$0 ~ /^\/\/ 贡献者轮播管理/ { mode = "js"; skip = 1; next }
+		$0 ~ /^[[:space:]]*\/\/ 加载贡献者[[:space:]]*$/ { next }
+		$0 ~ /loadContributors\(\);/ { next }
+		skip { next }
+		{ print }
+	' "$f" > "$tmp" && mv "$tmp" "$f"
+}
+FIX "easytier-contributors" "$PACKAGE_PATH/luci-app-easytier" strip_easytier_contributors
