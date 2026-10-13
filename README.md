@@ -40,7 +40,7 @@ IPQ 两台共用一套源码。X86 单独一套源码，不和 ARM 混编。
 
 面向飞牛 fnOS 虚拟机，只编 Generic x86/64。
 
-- BIOS 的 `combined.img.gz`。飞牛导入解压后的 `img`，不编 qcow2 和 UEFI
+- 飞牛虚拟机选择 **Q35 + Legacy BIOS**。镜像是 BIOS 的 `combined.img.gz`，解压成 `img` 后导入
 - ext4，内核分区 128MB，根分区 1024MB，便于在虚拟机里扩容
 - virtio 网卡和磁盘已编进内核；I210、I350 用 `igb`，X520（82599）用 `ixgbe`
 - 无显示输出，去掉核显
