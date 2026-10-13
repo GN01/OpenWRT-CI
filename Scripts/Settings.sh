@@ -87,6 +87,43 @@ exit 0
 EOF
 chmod +x ./files/etc/uci-defaults/98-vim-init
 
+#LAN：租约 24 小时，并关掉这个接口的 IPv6
+cat > ./files/etc/uci-defaults/96-lan-network <<'EOF'
+#!/bin/sh
+uci -q set dhcp.lan.leasetime='24h'
+uci -q set dhcp.lan.dhcpv6='disabled'
+uci -q set dhcp.lan.ra='disabled'
+uci -q set dhcp.lan.ndp='disabled'
+uci -q delete dhcp.lan.ra_flags
+uci -q delete dhcp.lan.ra_slaac
+uci -q commit dhcp
+
+uci -q set network.lan.ipv6='0'
+uci -q set network.lan.delegate='0'
+uci -q delete network.lan.ip6assign
+uci -q delete network.lan.ip6hint
+uci -q delete network.lan.ip6class
+uci -q delete network.lan.ip6ifaceid
+uci -q commit network
+exit 0
+EOF
+chmod +x ./files/etc/uci-defaults/96-lan-network
+
+#DNS 重定向原先只劫持 UDP 53，补上 TCP。LuCI 里的开关仍然控制这两条规则
+DNSMASQ_INIT="./package/network/services/dnsmasq/files/dnsmasq.init"
+if [ -f "$DNSMASQ_INIT" ] && ! grep -q 'tcp dport 53 counter redirect' "$DNSMASQ_INIT"; then
+	awk '
+		{
+			print
+			if ($0 ~ /udp dport 53 counter redirect/ && $0 ~ /DNSMASQ HIJACK/) {
+				line = $0
+				sub(/udp dport 53/, "tcp dport 53", line)
+				print line
+			}
+		}
+	' "$DNSMASQ_INIT" > "$DNSMASQ_INIT.tmp" && mv "$DNSMASQ_INIT.tmp" "$DNSMASQ_INIT"
+fi
+
 #Bandix 的 TC 挂载看不到被流量分载绕过的包
 if [[ "${WRT_TARGET,,}" == "x86" ]]; then
 	cat > ./files/etc/uci-defaults/97-x86-no-flowoffload <<'EOF'

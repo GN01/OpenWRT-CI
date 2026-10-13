@@ -27,6 +27,9 @@ CONFIG_PACKAGE_i915-firmware-dmc=n
 CONFIG_PACKAGE_bandix=y
 CONFIG_PACKAGE_luci-app-bandix=y
 CONFIG_PACKAGE_kmod-sched-core=y
+#应用过滤：https://github.com/destan19/OpenAppFilter
+#选择 luci-app-oaf 会带上 appfilter 和 kmod-oaf。流量分载已在 X86 关闭
+CONFIG_PACKAGE_luci-app-oaf=y
 #主题 aurora。下拉菜单和圆角由 Scripts/Handles.sh 按 VIKINGYFY 的配置改默认模板
 CONFIG_PACKAGE_luci-theme-aurora=y
 CONFIG_PACKAGE_luci-app-aurora-config=y

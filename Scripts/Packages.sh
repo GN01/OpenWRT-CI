@@ -56,10 +56,24 @@ UPDATE_PACKAGE "easytier" "EasyTier/luci-app-easytier" "main"
 UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
 # HomeProxy 要求 sing-box >= 1.15，官方 feeds 仍是 1.12，需连同 sing-box 从该仓库引入
 UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
-# Bandix 用 TC/eBPF 统计流量，与 SFE、硬件加速、Turbo ACC 冲突，只编进 X86
+# Bandix、OpenAppFilter 都依赖内核特性，并且和流量分载冲突，只编进 X86
 if [[ "${WRT_TARGET,,}" == "x86" ]]; then
 	UPDATE_PACKAGE "bandix" "timsaya/openwrt-bandix" "main"
 	UPDATE_PACKAGE "luci-app-bandix" "timsaya/luci-app-bandix" "main"
+	# https://github.com/destan19/OpenAppFilter 。先删掉 feeds 里的旧副本，避免编到过期的 oaf
+	UPDATE_PACKAGE "OpenAppFilter" "destan19/OpenAppFilter" "master" "" "luci-app-oaf open-app-filter appfilter oaf"
+fi
+
+# 内核 6.12 会把空参数列表当成错误，上游 KCFLAGS 还没盖住 strict-prototypes
+OAF_MAKE="./package/OpenAppFilter/oaf/Makefile"
+if [ -f "$OAF_MAKE" ] && ! grep -q 'Wno-error=strict-prototypes' "$OAF_MAKE"; then
+	awk '
+		index($0, "-Wno-error=missing-prototypes") && !seen {
+			sub(/-Wno-error=missing-prototypes/, "-Wno-error=strict-prototypes -Wno-error=missing-prototypes")
+			seen = 1
+		}
+		{ print }
+	' "$OAF_MAKE" > "$OAF_MAKE.tmp" && mv "$OAF_MAKE.tmp" "$OAF_MAKE"
 fi
 
 # Git稀疏克隆，只克隆指定目录到本地
