@@ -1,5 +1,7 @@
 #科学插件调整
+#VIKINGYFY 的 sing-box 1.15.0-alpha.12，完整版带 QUIC
 CONFIG_PACKAGE_luci-app-homeproxy=y
+CONFIG_PACKAGE_sing-box=y
 CONFIG_PACKAGE_luci-app-daed=n
 CONFIG_PACKAGE_luci-app-dae=n
 #增加插件

@@ -55,13 +55,15 @@ IPQ 两台共用一套源码。X86 单独一套源码，不和 ARM 混编。
 - 关闭 LAN 的 IPv6，不再下发前缀、RA 和 DHCPv6。WAN 的 IPv6 保持原样
 - DNS 重定向同时劫持 UDP 53 和 TCP 53。LuCI 里的开关仍然同时控制这两条规则
 
+软件源在编译时写成 `https://mirrors.vsean.net/openwrt`，后面仍是原来的版本路径。`video` 没有索引，不写入软件源列表。
+
 # 自定义配置
 
 ## 主题
 aurora。下拉菜单和圆角由 `Scripts/Handles.sh` 按 VIKINGYFY 的配置改默认模板。
 
 ## 应用插件
-- luci-app-homeproxy（代理，使用源码树自带的官方包和 sing-box，路由模式含自定义路由）
+- luci-app-homeproxy 和 sing-box（`VIKINGYFY/packages`。sing-box 1.15.0-alpha.12，完整版带 QUIC）
 - adguardhome（广告过滤 / DNS）
 - luci-app-adguardhome（`GN01/luci-app-adguardhome`）
 - easytier、zerotier（异地组网）

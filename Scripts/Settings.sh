@@ -32,6 +32,11 @@ echo "CONFIG_PACKAGE_luci=y" >> ./.config
 echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
+# 软件源在编译时写入镜像。只换 downloads.immortalwrt.org 这个前缀，版本路径保持不变。
+sed -i 's|\(VERSION_REPO:=.*\)https://downloads.immortalwrt.org|\1https://mirrors.vsean.net/openwrt|' ./include/version.mk
+# video 没有索引，不写进软件源列表
+sed -i '/^CONFIG_FEED_video=/d' ./.config
+echo "CONFIG_FEED_video=n" >> ./.config
 
 #引入私有扩展配置
 if [ -f "$GITHUB_WORKSPACE/Config/PRIVATE.txt" ]; then
@@ -55,20 +60,9 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 fi
 
 mkdir -p ./files/etc/uci-defaults/
-# 南京大学镜像的 25.12-SNAPSHOT 索引会截断，apk 更新报 wget error 8。先用默认 downloads.immortalwrt.org
-rm -f ./files/etc/uci-defaults/99-custom-apk-repos
-# APK_MIRROR="mirror.nju.edu.cn/immortalwrt"
-# cat > ./files/etc/uci-defaults/99-custom-apk-repos <<EOF
-# #!/bin/sh
-# if [ -d /etc/apk/repositories.d ]; then
-#     for f in /etc/apk/repositories.d/*.list; do
-#         [ -f "\$f" ] && sed -i "s|downloads.immortalwrt.org|${APK_MIRROR}|g" "\$f"
-#     done
-#     echo "APK mirror set to: ${APK_MIRROR}"
-# fi
-# exit 0
-# EOF
-# chmod +x ./files/etc/uci-defaults/99-custom-apk-repos
+rm -f ./files/etc/uci-defaults/99-zzz-apk-mirror \
+	./files/etc/uci-defaults/99-zzz-official-apk \
+	./files/etc/uci-defaults/99-custom-apk-repos
 
 cat > ./files/etc/uci-defaults/98-vim-init <<'EOF'
 #!/bin/sh
