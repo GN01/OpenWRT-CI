@@ -1,5 +1,5 @@
 #科学插件调整
-#VIKINGYFY 的 sing-box 1.15.0-alpha.12，完整版带 QUIC
+#官方 sing-box，完整版带 QUIC。X86 源码树是 1.12.25
 CONFIG_PACKAGE_luci-app-homeproxy=y
 CONFIG_PACKAGE_sing-box=y
 CONFIG_PACKAGE_luci-app-daed=n
