@@ -8,22 +8,8 @@ sed -i "/attendedsysupgrade/d" $(find ./feeds/luci/collections/ -type f -name "M
 find ./feeds/luci/collections/ -type f -name "Makefile" -exec sed -i "s/luci-theme-bootstrap/luci-theme-$WRT_THEME/g" {} +
 #修改immortalwrt.lan关联IP
 sed -i "s/192\.168\.[0-9]*\.[0-9]*/$WRT_IP/g" $(find ./feeds/luci/modules/luci-mod-system/ -type f -name "flash.js")
-# 去掉以前写进 LuCI 页面里的编译时间。那个 js 会被浏览器按不变的 LuCI 版本号缓存
-find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js" -exec sed -i \
-	-e "s/ + (' \/ [^']*')//g" {} +
-# 编译时间写进固件说明。状态页每次向系统读取，不靠缓存的 js
-if [ -n "${WRT_DATE}" ] && [ -f ./include/version.mk ]; then
-	awk -v stamp="${WRT_MARK}-${WRT_DATE}" '
-		index($0, "VERSION_CODE:=$(if $(VERSION_CODE),$(VERSION_CODE),") == 1 {
-			print "VERSION_CODE:=$(if $(VERSION_CODE),$(VERSION_CODE),$(REVISION)-" stamp ")"
-			next
-		}
-		{ print }
-	' ./include/version.mk > ./include/version.mk.tmp && mv ./include/version.mk.tmp ./include/version.mk
-fi
-# 这两个包不重编的话，镜像里还是上一次的版本号
-find ./build_dir -type d \( -name base-files -o -name 'luci-mod-status*' \) -prune -exec rm -rf {} + 2>/dev/null || true
-find ./bin -type f \( -name 'base-files_*.ipk' -o -name 'luci-mod-status_*.ipk' \) -delete 2>/dev/null || true
+#添加编译日期标识
+find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js" -exec sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_MARK-$WRT_DATE')/g" {} +
 
 WIFI_UC="./package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc"
 if [ -f "$WIFI_UC" ]; then

@@ -65,6 +65,8 @@ fi
 
 rm -f .config
 cat "$CONFIG_FILE" "$GITHUB_WORKSPACE/Config/GENERAL.txt" >> .config
+# 同一份源码重复编译时先还原状态页，Settings.sh 只追加一次日期
+git -C feeds/luci checkout -- modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 "$GITHUB_WORKSPACE/Scripts/Settings.sh"
 set -a
 # shellcheck disable=SC1091
