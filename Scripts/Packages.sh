@@ -57,6 +57,54 @@ UPDATE_PACKAGE "luci-app-adguardhome" "GN01/luci-app-adguardhome" "main"
 rm -rf ./package/packages
 # HomeProxy 和 sing-box 用源码树自带的官方包。
 # UPDATE_PACKAGE "homeproxy" "VIKINGYFY/packages" "main" "" "sing-box luci-app-homeproxy"
+
+# HomeProxy 自带的中国 IP 和域名列表跟着 LuCI 源码走，常常落后几个月。
+# 编译时取最新版写进镜像，来源和版本号与 HomeProxy 自己的更新脚本一致。
+# 写在 ./files 里，不改 feeds，下次 feeds update 不会被本地改动卡住。下载失败就保留官方自带的版本。
+HP_RES_DIR="./files/etc/homeproxy/resources"
+UPDATE_HP_RES() {
+	local res_name=$1
+	local res_repo=$2
+	local res_ref=$3
+	local res_file=$4
+	local auth=()
+	[ -n "${GITHUB_TOKEN:-}" ] && auth=(-H "Authorization: Bearer $GITHUB_TOKEN")
+
+	local res_info=$(curl -fsSL --max-time 30 "${auth[@]}" \
+		"https://api.github.com/repos/$res_repo/commits?sha=$res_ref&path=$res_file&per_page=1" | python3 -c '
+import json, re, sys
+try:
+	c = json.load(sys.stdin)[0]
+	print(c["sha"], "".join(re.findall(r"[0-9-]+", c["commit"]["message"])).replace("-", ""))
+except Exception:
+	pass
+')
+	local res_sha=${res_info% *}
+	local res_ver=${res_info#* }
+	if [ -z "$res_info" ] || [ -z "$res_ver" ]; then
+		echo "HomeProxy $res_name: failed to get the latest version, keep the bundled one"
+		return
+	fi
+
+	local tmp_file=$(mktemp)
+	if curl -fsSL --max-time 120 -o "$tmp_file" "https://raw.githubusercontent.com/$res_repo/$res_sha/$res_file" && [ -s "$tmp_file" ]; then
+		[ "$res_name" = "china_list" ] && sed -i -e "s/full://g" -e "/:/d" "$tmp_file"
+		mkdir -p "$HP_RES_DIR"
+		chmod 644 "$tmp_file"
+		mv -f "$tmp_file" "$HP_RES_DIR/$res_name.txt"
+		echo "$res_ver" > "$HP_RES_DIR/$res_name.ver"
+		echo "HomeProxy $res_name: $res_ver"
+	else
+		rm -f "$tmp_file"
+		echo "HomeProxy $res_name: download failed, keep the bundled one"
+	fi
+}
+if [ -d ./feeds/luci/applications/luci-app-homeproxy ]; then
+	UPDATE_HP_RES "china_ip4" "1715173329/IPCIDR-CHINA" "master" "ipv4.txt"
+	UPDATE_HP_RES "china_ip6" "1715173329/IPCIDR-CHINA" "master" "ipv6.txt"
+	UPDATE_HP_RES "gfw_list" "Loyalsoldier/v2ray-rules-dat" "release" "gfw.txt"
+	UPDATE_HP_RES "china_list" "Loyalsoldier/v2ray-rules-dat" "release" "direct-list.txt"
+fi
 # Bandix、OpenAppFilter 都依赖内核特性，并且和流量分载冲突，只编进 X86
 if [[ "${WRT_TARGET,,}" == "x86" ]]; then
 	UPDATE_PACKAGE "bandix" "timsaya/openwrt-bandix" "main"
@@ -99,7 +147,6 @@ function git_sparse_clone() {
 
 #删除官方的默认插件（保留dae/daed和adguardhome核心，luci-app-adguardhome使用GN01仓库版本）
 rm -rf ./feeds/luci/applications/luci-app-{passwall*,mosdns,dockerman,bypass*,adguardhome}
-rm -rf ./feeds/packages/net/v2ray-geodata
 
 #复制本地固化软件包（目录为空或不存在时跳过）
 if [ -d "$GITHUB_WORKSPACE/Packages" ] && [ -n "$(ls -A "$GITHUB_WORKSPACE/Packages" 2>/dev/null)" ]; then

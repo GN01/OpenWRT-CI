@@ -126,7 +126,6 @@ CONFIG_PACKAGE_luci-lib-ipkg=y
 CONFIG_PACKAGE_luci-lua-runtime=y
 CONFIG_PACKAGE_luci-proto-relay=y
 CONFIG_PACKAGE_openssl-util=y
-CONFIG_PACKAGE_v2ray-geodata-updater=y
 #精简：USB/磁盘相关组件
 CONFIG_PACKAGE_automount=n
 CONFIG_PACKAGE_usbmuxd=n
